@@ -8,9 +8,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
+
 public class RecentCallPanel extends JPanel implements CallPresenter.View {
     // Define Presenter
     public CallPresenter callPresenter;
+
+    // Tool Panel Bar
+    private JPanel jCallBarPanel;
+
+    // Scroll Panel
+    public JScrollPane jRecentCallPane;
 
     // Construct
     public RecentCallPanel() {
@@ -25,7 +33,9 @@ public class RecentCallPanel extends JPanel implements CallPresenter.View {
 
     // Make Bar Panel (two button: add, del recent Call)
     private void showCallBarPanel() {
-        callPresenter.setjCallBarPanel();
+        jCallBarPanel = new JPanel();
+        jCallBarPanel.setBackground(new Color(23,169,146));
+        jCallBarPanel.setPreferredSize(new Dimension(420, 64));
 
         JButton btnAddCall = new JButton("");
         btnAddCall.addActionListener(new RecentCallPanel.AddCallBtnListener());
@@ -39,10 +49,10 @@ public class RecentCallPanel extends JPanel implements CallPresenter.View {
         btnDelCall.setIcon(iconDelCall);
         btnDelCall.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-        callPresenter.getjCallBarPanel().add(btnAddCall);
-        callPresenter.getjCallBarPanel().add(btnDelCall);
+        jCallBarPanel.add(btnAddCall);
+        jCallBarPanel.add(btnDelCall);
 
-        add(callPresenter.getjCallBarPanel(), "North");
+        add(jCallBarPanel, "North");
         setVisible(true);
     }
 
@@ -51,7 +61,12 @@ public class RecentCallPanel extends JPanel implements CallPresenter.View {
     private void showRecentCall() {
         callPresenter.refreshRecentCall();
 
-        add(callPresenter.getjRecentCallPane(), "Center");
+        jRecentCallPane = new JScrollPane(callPresenter.getList());
+        jRecentCallPane.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
+        jRecentCallPane.setSize(418, 600);
+
+        callPresenter.refreshAcceptInView();
+        add(jRecentCallPane, "Center");
         setVisible(true);
     }
 
@@ -99,13 +114,17 @@ public class RecentCallPanel extends JPanel implements CallPresenter.View {
 
     @Override
     public void deleteList() {
-        remove(callPresenter.getjRecentCallPane());
+        remove(jRecentCallPane);
     }
 
     @Override
     public void acceptRenderer() {
+        jRecentCallPane = new JScrollPane(callPresenter.getList());
+        jRecentCallPane.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
+        jRecentCallPane.setSize(418, 600);
+
         callPresenter.getList().setCellRenderer(new RecentCallPanel.CallRenderer());
-        add(callPresenter.jRecentCallPane);
+        add(jRecentCallPane);
         revalidate();
         setVisible(true);
     }

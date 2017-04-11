@@ -7,7 +7,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -17,16 +16,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
-import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 
 public class CallPresenter {
     private View view;
-
-    // Tool Panel Bar
-    private JPanel jCallBarPanel;
-
-    // Scroll Panel
-    public JScrollPane jRecentCallPane;
 
     // clicked list index
     private int iClickedList = -1;
@@ -45,23 +37,10 @@ public class CallPresenter {
     }
 
     /* Getter */
-    public JPanel getjCallBarPanel() {
-        return jCallBarPanel;
-    }
-    public JScrollPane getjRecentCallPane() {
-        return jRecentCallPane;
-    }
     public JList getList() {
         return list;
     }
 
-    /* Setter */
-    public void setjCallBarPanel() {
-        // init Panel
-        jCallBarPanel = new JPanel();
-        jCallBarPanel.setBackground(new Color(23,169,146));
-        jCallBarPanel.setPreferredSize(new Dimension(420, 64));
-    }
     public void setiClickedList(int index) {
         iClickedList = index;
     }
@@ -142,6 +121,7 @@ public class CallPresenter {
 
             view.deleteList();
             refreshRecentCall();
+            refreshAcceptInView();
             //view.updateScreen();
         } catch (Exception e) {
             System.out.println("fail");
@@ -170,6 +150,7 @@ public class CallPresenter {
 
             view.deleteList();
             refreshRecentCall();
+            refreshAcceptInView();
             //view.updateScreen();
         } catch (Exception e) {
             System.out.println("fail");
@@ -181,10 +162,8 @@ public class CallPresenter {
     public void refreshRecentCall() {
         list = new JList(calls.toArray());
         list.setVisibleRowCount(4);
-
-        jRecentCallPane = new JScrollPane(list);
-        jRecentCallPane.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
-        jRecentCallPane.setSize(418, 600);
+    }
+    public void refreshAcceptInView() {
         view.acceptRenderer();
     }
 
