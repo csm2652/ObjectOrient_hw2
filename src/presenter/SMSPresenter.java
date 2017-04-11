@@ -1,6 +1,5 @@
 package presenter;
 
-import model.Call;
 import model.SMS;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -8,7 +7,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -18,17 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
-import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
-
-
 public class SMSPresenter {
     private View view;
-
-    // Tool Panel Bar
-    private JPanel jSMSBarPanel;
-
-    // Scroll Panel
-    public JScrollPane jRecentSMSPane;
 
     // clicked list index
     private int iClickedList = -1;
@@ -48,24 +37,11 @@ public class SMSPresenter {
     }
 
     /* Getter */
-    public JPanel getjSMSBarPanel() {
-        return jSMSBarPanel;
-    }
-    public JScrollPane getjRecentSMSPane() {
-        return jRecentSMSPane;
-    }
     public JList getList() {
         return list;
     }
 
     /* Setter */
-    public void setjSMSBarPanel() {
-        // init Panel
-        jSMSBarPanel = new JPanel();
-        jSMSBarPanel.setBackground(new Color(23,169,146));
-        jSMSBarPanel.setPreferredSize(new Dimension(420, 64));
-    }
-
     public void setiClickedList(int index) {
         iClickedList = index;
     }
@@ -119,6 +95,14 @@ public class SMSPresenter {
         }
     }
 
+    public void touchDelSMS() {
+        if (iClickedList != -1) {
+            delRecentSMS(smss.get(iClickedList));
+        } else {
+            System.out.println("none clicked");
+        }
+    }
+
     // Add data (Data: Recent SMS)
     private void addRecentSMS(SMS sms) {
         try {
@@ -142,18 +126,13 @@ public class SMSPresenter {
 
             view.deleteList();
             refreshRecentSMS();
+            refreshAcceptInView();
         } catch (Exception e) {
             System.out.println("fail");
         }
     }
 
-    public void touchDelSMS() {
-        if (iClickedList != -1) {
-            delRecentSMS(smss.get(iClickedList));
-        } else {
-            System.out.println("none clicked");
-        }
-    }
+
 
 
     // Del data (Data: Recent SMS)
@@ -179,6 +158,7 @@ public class SMSPresenter {
 
             view.deleteList();
             refreshRecentSMS();
+            refreshAcceptInView();
         } catch (Exception e) {
             System.out.println("fail");
         }
@@ -189,10 +169,8 @@ public class SMSPresenter {
     public void refreshRecentSMS() {
         list = new JList(smss.toArray());
         list.setVisibleRowCount(4);
-
-        jRecentSMSPane = new JScrollPane(list);
-        jRecentSMSPane.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
-        jRecentSMSPane.setSize(420, 600);
+    }
+    public void refreshAcceptInView() {
         view.acceptRenderer();
     }
 
@@ -215,9 +193,6 @@ public class SMSPresenter {
         SMS entry = (SMS) value;
         return entry.getType();
     }
-
-
-
 
     public interface View {
         void deleteList();

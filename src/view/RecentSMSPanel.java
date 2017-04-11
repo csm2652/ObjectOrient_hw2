@@ -8,9 +8,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
+
 public class RecentSMSPanel extends JPanel implements SMSPresenter.View{
     // Define Presenter
     public SMSPresenter smsPresenter;
+
+    // Tool Panel Bar
+    private JPanel jSMSBarPanel;
+
+    // Scroll Panel
+    public JScrollPane jRecentSMSPane;
 
     // Construct
     public RecentSMSPanel() {
@@ -25,7 +33,10 @@ public class RecentSMSPanel extends JPanel implements SMSPresenter.View{
 
     // Make Bar Panel (two button: add, del recent SMS)
     private void showSMSBarPanel() {
-        smsPresenter.setjSMSBarPanel();
+        // init Panel
+        jSMSBarPanel = new JPanel();
+        jSMSBarPanel.setBackground(new Color(23,169,146));
+        jSMSBarPanel.setPreferredSize(new Dimension(420, 64));
 
         JButton btnAddCall = new JButton("");
         btnAddCall.addActionListener(new RecentSMSPanel.AddCallBtnListener());
@@ -39,10 +50,10 @@ public class RecentSMSPanel extends JPanel implements SMSPresenter.View{
         btnDelCall.setIcon(iconDelCall);
         btnDelCall.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-        smsPresenter.getjSMSBarPanel().add(btnAddCall);
-        smsPresenter.getjSMSBarPanel().add(btnDelCall);
+        jSMSBarPanel.add(btnAddCall);
+        jSMSBarPanel.add(btnDelCall);
 
-        add(smsPresenter.getjSMSBarPanel(), "North");
+        add(jSMSBarPanel, "North");
         setVisible(true);
     }
 
@@ -51,7 +62,12 @@ public class RecentSMSPanel extends JPanel implements SMSPresenter.View{
     private void showRecentSMS() {
         smsPresenter.refreshRecentSMS();
 
-        add(smsPresenter.getjRecentSMSPane(), "Center");
+        jRecentSMSPane = new JScrollPane(smsPresenter.getList());
+        jRecentSMSPane.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
+        jRecentSMSPane.setSize(418, 600);
+
+        smsPresenter.refreshAcceptInView();
+        add(jRecentSMSPane, "Center");
         setVisible(true);
     }
 
@@ -98,13 +114,17 @@ public class RecentSMSPanel extends JPanel implements SMSPresenter.View{
 
     @Override
     public void deleteList() {
-        remove(smsPresenter.getjRecentSMSPane());
+        remove(jRecentSMSPane);
     }
 
     @Override
     public void acceptRenderer() {
+        jRecentSMSPane = new JScrollPane(smsPresenter.getList());
+        jRecentSMSPane.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
+        jRecentSMSPane.setSize(420, 600);
+
         smsPresenter.getList().setCellRenderer(new RecentSMSPanel.SMSRenderer());
-        add(smsPresenter.jRecentSMSPane);
+        add(jRecentSMSPane);
         revalidate();
         setVisible(true);
     }
