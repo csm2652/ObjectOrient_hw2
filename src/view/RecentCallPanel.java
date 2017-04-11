@@ -1,6 +1,5 @@
 package view;
 
-import model.Call;
 import presenter.CallPresenter;
 
 import javax.swing.*;
@@ -75,15 +74,15 @@ public class RecentCallPanel extends JPanel implements CallPresenter.View {
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index,
                                                       boolean isSelected, boolean cellHasFocus) {
-            Call entry = (Call) value;
-            setText("  " + entry.toStringNumber() + "  " + entry.getTime());
+
+            setText(callPresenter.getStringValue(value));
 
             ImageIcon iconRecv = new ImageIcon("src\\resource\\images\\img_person_recv.png");
             ImageIcon iconSend = new ImageIcon("src\\resource\\images\\img_person_send.png");
 
-            if (entry.getType().equals("recv")) {
+            if (callPresenter.getTypeValue(value).equals("recv")) {
                 setIcon(iconRecv);
-            } else if (entry.getType().equals("send")){
+            } else if (callPresenter.getTypeValue(value).equals("send")){
                 setIcon(iconSend);
             }
 

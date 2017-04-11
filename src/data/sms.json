@@ -1,3 +1,1 @@
-{"sms":[{"number":"01076544754","time":"2017-04-10 00:53:07","type":"send","content":"Sending Message"},{"number":"01076544754",
-  "type":"send",
-  "time":"2017-04-10 01:42:24","content":"í•œê¸€"}]}
+{"call":[{"number":"01076544754","time":"2017-04-10 00:53:07","type":"send","content":"Sending Message"},{"number":"01076544754","time":"2017-04-12 01:22:44","type":"send","content":"ÇÑ±Û"},{"number":"01076544754","time":"2017-04-12 01:22:46","type":"send","content":"ÇÑ±Û"}],"sms":[{"number":"01076544754","time":"2017-04-10 00:53:07","type":"send","content":"Sending Message"},{"number":"01076544754","time":"2017-04-12 01:22:44","type":"send","content":"ÇÑ±Û"},{"number":"01076544754","time":"2017-04-12 01:22:46","type":"send","content":"ÇÑ±Û"}]}

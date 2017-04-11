@@ -1,6 +1,5 @@
 package view;
 
-import model.SMS;
 import presenter.SMSPresenter;
 
 import javax.swing.*;
@@ -76,15 +75,14 @@ public class RecentSMSPanel extends JPanel implements SMSPresenter.View{
         public Component getListCellRendererComponent(JList list, Object value, int index,
                                                       boolean isSelected, boolean cellHasFocus) {
 
-            SMS entry = (SMS) value;
-            setText("  " + entry.toStringNumber() + "  "  + entry.toStringContent() + " "+ entry.getTime());
+            setText(smsPresenter.getStringValue(value));
 
             ImageIcon iconRecv = new ImageIcon("src\\resource\\images\\img_person_recv_sms.png");
             ImageIcon iconSend = new ImageIcon("src\\resource\\images\\img_person_send_sms.png");
 
-            if (entry.getType().equals("recv")) {
+            if (smsPresenter.getTypeValue(value).equals("recv")) {
                 setIcon(iconRecv);
-            } else if (entry.getType().equals("send")){
+            } else if (smsPresenter.getTypeValue(value).equals("send")){
                 setIcon(iconSend);
             }
 

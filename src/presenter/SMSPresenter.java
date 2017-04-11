@@ -1,5 +1,6 @@
 package presenter;
 
+import model.Call;
 import model.SMS;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -205,6 +206,18 @@ public class SMSPresenter {
             System.err.println("Error: " + e);
         }
     }
+
+    public String getStringValue(Object value) {
+        SMS entry = (SMS) value;
+        return ("  " + entry.toStringNumber() + "  "  + entry.toStringContent() + " "+ entry.getTime());
+    }
+    public String getTypeValue(Object value) {
+        SMS entry = (SMS) value;
+        return entry.getType();
+    }
+
+
+
 
     public interface View {
         void deleteList();

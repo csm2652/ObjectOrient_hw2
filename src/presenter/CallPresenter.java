@@ -199,6 +199,15 @@ public class CallPresenter {
         }
     }
 
+    public String getStringValue(Object value) {
+        Call entry = (Call) value;
+        return ("  " + entry.toStringNumber() + "  " + entry.getTime());
+    }
+    public String getTypeValue(Object value) {
+        Call entry = (Call) value;
+        return entry.getType();
+    }
+
     public interface View {
         void deleteList();
         void acceptRenderer();
