@@ -1,7 +1,12 @@
 package view;
 
-/**
- * Created by csm26 on 2017-04-10.
- */
-public class AddressBookPanel {
+import javax.swing.*;
+import java.awt.*;
+
+public class AddressBookPanel extends JPanel {
+    Button button = new Button("전화번호부");
+    public AddressBookPanel() {
+        add(button);
+        setVisible(true);
+    }
 }

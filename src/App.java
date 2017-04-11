@@ -1,41 +1,57 @@
+import presenter.MainPresenter;
+
 import javax.swing.*;
+import java.awt.*;
 
-/**
- * Created by csm26 on 2017-04-10.
- */
-public class App {
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
-     */
-    private static void createAndShowGUI() {
-        //Make sure we have nice window decorations.
-        JFrame.setDefaultLookAndFeelDecorated(true);
+public class App extends JFrame implements MainPresenter.View {
+    private JPanel activity_main;
+    // define Presenter
+    public MainPresenter mainPresenter;
 
-        //Create and set up the window.
-        JFrame frame = new JFrame("HelloWorldSwing");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    private App() {
+        // access Presenter
+        mainPresenter = new MainPresenter(this);
 
-        //Add the ubiquitous "Hello World" label.
-        JLabel label = new JLabel("Hello World");
-        frame.getContentPane().add(label);
+        // jTab UI setting (remove border)
+        UIManager.put("TabbedPane.contentOpaque", false);
+        Color tabBorderColor = new Color(23,169,146);
+        UIManager.getDefaults().put("TabbedPane.contentBorderInsets", new Insets(0,0,0,0));
+        UIManager.getDefaults().put("TabbedPane.tabsOverlapBorder", false);
+        UIManager.put("TabbedPane.borderHightlightColor", tabBorderColor);
+        UIManager.put("TabbedPane.darkShadow", tabBorderColor);
+        UIManager.put("TabbedPane.shadow", tabBorderColor);
+        UIManager.put("TabbedPane.light", tabBorderColor);
+        UIManager.put("TabbedPane.highlight", tabBorderColor);
+        UIManager.put("TabbedPane.focus", tabBorderColor);
+        UIManager.put("TabbedPane.selectHighlight", tabBorderColor);
 
-        frame.setSize(432,700);
+        // set Title
+        setTitle("Address Book");
 
-        //Display the window.
-        frame.pack();
-        frame.setVisible(true);
+        // init Tab
+        JTabbedPane jTab = new JTabbedPane();
+        jTab.setBackground(new Color(23,169,146));
+        ImageIcon icon = new ImageIcon("src\\resource\\images\\img_recent_call.jpg");
+        jTab.addTab("", icon, mainPresenter.getRecentCallPanel());
+        icon = new ImageIcon("src\\resource\\images\\img_recent_sms.jpg");
+        jTab.addTab("", icon, mainPresenter.getRecentSMSPanel());
+        icon = new ImageIcon("src\\resource\\images\\img_addressbook.jpg");
+        jTab.addTab("", icon, mainPresenter.getAddressBookPanel());
+
+        // accept Tab
+        add(jTab);
+        jTab.addChangeListener((ChangeEvent) -> {
+            mainPresenter.touchMenu(jTab.getSelectedIndex());
+        });
+
+        // set Device
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        getContentPane().setBackground(new Color(23,169,146));
+        setSize(432, 739);
+        setVisible(true);
     }
 
     public static void main(String[] args) {
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-
-            }
-        });
+        new App();
     }
 }
