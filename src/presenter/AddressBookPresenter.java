@@ -1,6 +1,7 @@
 package presenter;
 
 import model.Call;
+import model.Person;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,21 +18,21 @@ import java.util.Collections;
 import java.util.Date;
 
 
-public class CallPresenter {
+public class AddressBookPresenter {
     private View view;
 
     // clicked list index
     private int iClickedList = -1;
 
     // JSON
-    private JSONArray callArray;
+    private JSONArray personArray;
     private JSONObject jsonObject;
 
-    private ArrayList<Call> calls = new ArrayList<>();
+    private ArrayList<Person> persons = new ArrayList<>();
     private JList list;
 
     // Construct
-    public CallPresenter(View view) {
+    public AddressBookPresenter(View view) {
         this.view = view;
         loadCallJSON();
     }
@@ -49,17 +50,18 @@ public class CallPresenter {
         try {
             // Get JSON DATA
             JSONParser jsonParser= new JSONParser();
-            jsonObject = (JSONObject) jsonParser.parse(new FileReader("src\\data\\call.json"));
-            callArray = (JSONArray) jsonObject.get("call");
+            jsonObject = (JSONObject) jsonParser.parse(new FileReader("src\\data\\person.json"));
+            personArray = (JSONArray) jsonObject.get("person");
 
             // Add Json to Array
             JSONObject jsonObjectToSave;
-            for (int iCall = 0; iCall < callArray.size(); iCall++) {
-                jsonObjectToSave = (JSONObject) callArray.get(iCall);
-                calls.add(new Call(
-                        jsonObjectToSave.get("type").toString(),
+            for (int iPerson = 0; iPerson < personArray.size(); iPerson++) {
+                jsonObjectToSave = (JSONObject) personArray.get(iPerson);
+                persons.add(new Person(
+                        jsonObjectToSave.get("name").toString(),
                         jsonObjectToSave.get("number").toString(),
-                        jsonObjectToSave.get("time").toString()));
+                        jsonObjectToSave.get("group").toString(),
+                        jsonObjectToSave.get("email").toString()));
             }
             reverseArray();
 
@@ -74,45 +76,38 @@ public class CallPresenter {
 
     // reverArray
     private void reverseArray() {
-        Collections.reverse(calls);
+        Collections.reverse(persons);
     }
 
-    public void touchAddCall() {
-        if (iClickedList != -1) {
-            long time = System.currentTimeMillis();
-
-            SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String currentTime = dayTime.format(new Date(time));
-
-            addRecentCall(new Call("send", calls.get(iClickedList).getNumber(), currentTime));
-            iClickedList = -1;
-        } else {
-            System.out.println("none clicked");
-        }
+    // Button clicked
+    public void touchAddPerson() {
+        iClickedList = iClickedList;
     }
 
-    public void touchDelCall() {
-        if (iClickedList != -1) {
-            delRecentCall(calls.get(iClickedList));
-            iClickedList = -1;
-        } else {
-            System.out.println("none clicked");
-        }
+    public void touchDelPerson() {
+
     }
+
+    public void touchModPerson() {
+
+    }
+
+
 
     // Add data (Data: Recent Call)
-    private void addRecentCall(Call call) {
+    private void addPerson(Person person) {
         try {
             reverseArray();
 
-            JSONObject addCallObj = new JSONObject();
-            addCallObj.put("type", call.getType());
-            addCallObj.put("number", call.getNumber());
-            addCallObj.put("time", call.getTime());
-            callArray.add(addCallObj);
-            jsonObject.put("call", callArray);
+            JSONObject addPersonObj = new JSONObject();
+            addPersonObj.put("name", person.getName());
+            addPersonObj.put("number", person.getNumber());
+            addPersonObj.put("group", person.getGroup());
+            addPersonObj.put("email", person.getEmail());
+            personArray.add(addPersonObj);
+            jsonObject.put("person", personArray);
 
-            calls.add(call);
+            persons.add(person);
 
             reverseArray();
 
@@ -121,7 +116,7 @@ public class CallPresenter {
             list.clearSelection();
 
             view.deleteList();
-            refreshRecentCall();
+            refreshPersonList();
             refreshAcceptInView();
             //view.updateScreen();
         } catch (Exception e) {
@@ -130,18 +125,19 @@ public class CallPresenter {
     }
 
     // Del data (Data: Recent Call)
-    private void delRecentCall(Call call) {
+    private void delPerson(Person person) {
         try {
             reverseArray();
 
-            JSONObject delCallObj = new JSONObject();
-            delCallObj.put("type", call.getType());
-            delCallObj.put("number", call.getNumber());
-            delCallObj.put("time", call.getTime());
-            callArray.remove(delCallObj);
-            jsonObject.put("call", callArray);
+            JSONObject delPersonObj = new JSONObject();
+            delPersonObj.put("name", person.getName());
+            delPersonObj.put("number", person.getNumber());
+            delPersonObj.put("group", person.getGroup());
+            delPersonObj.put("email", person.getEmail());
+            personArray.add(delPersonObj);
+            jsonObject.put("person", personArray);
 
-            calls.remove(call);
+            persons.remove(person);
 
             reverseArray();
 
@@ -150,7 +146,7 @@ public class CallPresenter {
             list.clearSelection();
 
             view.deleteList();
-            refreshRecentCall();
+            refreshPersonList();
             refreshAcceptInView();
             //view.updateScreen();
         } catch (Exception e) {
@@ -160,8 +156,8 @@ public class CallPresenter {
 
     // Refresh List (Array to JList)
     // Accept Renderer, Add Pane
-    public void refreshRecentCall() {
-        list = new JList(calls.toArray());
+    public void refreshPersonList() {
+        list = new JList(persons.toArray());
         list.setVisibleRowCount(4);
     }
     public void refreshAcceptInView() {
@@ -171,7 +167,7 @@ public class CallPresenter {
     private void saveCallJSON() {
         FileWriter fileWriter;
         try{
-            fileWriter = new FileWriter("src\\data\\call.json");
+            fileWriter = new FileWriter("src\\data\\person.json");
             fileWriter.write(jsonObject.toString());
             fileWriter.close();
         }catch (Exception e){
@@ -179,13 +175,9 @@ public class CallPresenter {
         }
     }
 
-    public String getStringValue(Object value) {
-        Call entry = (Call) value;
-        return ("  " + entry.toStringNumber() + "  " + entry.getTime());
-    }
-    public String getTypeValue(Object value) {
-        Call entry = (Call) value;
-        return entry.getType();
+    public String getStringNameNumber(Object value) {
+        Person entry = (Person) value;
+        return ("  " + entry.toStringPerson());
     }
 
     public interface View {
