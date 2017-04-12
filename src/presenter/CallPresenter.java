@@ -94,6 +94,7 @@ public class CallPresenter {
     public void touchDelCall() {
         if (iClickedList != -1) {
             delRecentCall(calls.get(iClickedList));
+            iClickedList = -1;
         } else {
             System.out.println("none clicked");
         }

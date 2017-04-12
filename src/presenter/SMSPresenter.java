@@ -98,6 +98,7 @@ public class SMSPresenter {
     public void touchDelSMS() {
         if (iClickedList != -1) {
             delRecentSMS(smss.get(iClickedList));
+            iClickedList = -1;
         } else {
             System.out.println("none clicked");
         }
