@@ -59,7 +59,7 @@ public class AddressBookPanel extends JPanel implements AddressBookPresenter.Vie
 
             }
         });
-
+        
         JButton btnAddPerson = new JButton();
         btnAddPerson.addActionListener(new AddressBookPanel.AddPersonBtnListener());
         ImageIcon iconAddPerson = new ImageIcon("src\\resource\\images\\img_add_person.png");
@@ -82,6 +82,7 @@ public class AddressBookPanel extends JPanel implements AddressBookPresenter.Vie
         btnModPerson.setPreferredSize(new Dimension(28, 28));
 
         jAddressBookBarPanel.add(jTextArea);
+
         jAddressBookBarPanel.add(btnAddPerson);
         jAddressBookBarPanel.add(btnDelPerson);
         jAddressBookBarPanel.add(btnModPerson);
