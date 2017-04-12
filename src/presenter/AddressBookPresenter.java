@@ -1,5 +1,6 @@
 package presenter;
 
+import algorithm.SearchByName;
 import model.Call;
 import model.Person;
 import org.json.simple.JSONArray;
@@ -29,6 +30,8 @@ public class AddressBookPresenter {
     private JSONObject jsonObject;
 
     private ArrayList<Person> persons = new ArrayList<>();
+    private ArrayList<Person> personsSearched = new ArrayList<>();
+
     private JList list;
     private JList listSearched;
 
@@ -85,7 +88,7 @@ public class AddressBookPresenter {
 
     // Button clicked
     public void touchAddPerson() {
-        iClickedList = iClickedList;
+        addPerson(new Person("정두진","01063958996","",""));
     }
 
     public void touchDelPerson() {
@@ -190,9 +193,12 @@ public class AddressBookPresenter {
             view.deleteList();
             refreshAcceptInView();
         } else {
-            listSearched = new JList();
-
-
+            personsSearched.clear();
+            for (int iSearch = 0; iSearch < persons.size(); iSearch++) {
+                if (SearchByName.search(persons.get(iSearch).getName(), search))
+                    personsSearched.add(persons.get(iSearch));
+            }
+            listSearched = new JList(personsSearched.toArray());
 
             listSearched.setVisibleRowCount(4);
             view.deleteList();
