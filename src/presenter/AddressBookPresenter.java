@@ -30,6 +30,7 @@ public class AddressBookPresenter {
 
     private ArrayList<Person> persons = new ArrayList<>();
     private JList list;
+    private JList listSearched;
 
     // Construct
     public AddressBookPresenter(View view) {
@@ -40,6 +41,9 @@ public class AddressBookPresenter {
     /* Getter */
     public JList getList() {
         return list;
+    }
+    public JList getListSearched() {
+        return listSearched;
     }
 
     public void setiClickedList(int index) {
@@ -180,8 +184,26 @@ public class AddressBookPresenter {
         return ("  " + entry.toStringPerson());
     }
 
+    public void changedTxtSearch(String search) {
+        if (search.equals("")) {
+            list.setVisibleRowCount(4);
+            view.deleteList();
+            refreshAcceptInView();
+        } else {
+            listSearched = new JList();
+
+
+
+            listSearched.setVisibleRowCount(4);
+            view.deleteList();
+            view.acceptSearched();
+        }
+    }
+
+
     public interface View {
         void deleteList();
         void acceptRenderer();
+        void acceptSearched();
     }
 }

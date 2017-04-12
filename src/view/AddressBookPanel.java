@@ -46,12 +46,12 @@ public class AddressBookPanel extends JPanel implements AddressBookPresenter.Vie
         jTextArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                System.out.println(jTextArea.getText());
+                addressBookPresenter.changedTxtSearch(jTextArea.getText());
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                System.out.println(jTextArea.getText());
+                addressBookPresenter.changedTxtSearch(jTextArea.getText());
             }
 
             @Override
@@ -161,6 +161,19 @@ public class AddressBookPanel extends JPanel implements AddressBookPresenter.Vie
         jPersonListPane.setSize(418, 600);
 
         addressBookPresenter.getList().setCellRenderer(new AddressBookPanel.CallRenderer());
+        add(jPersonListPane);
+        revalidate();
+        setVisible(true);
+    }
+
+
+    @Override
+    public void acceptSearched() {
+        jPersonListPane = new JScrollPane(addressBookPresenter.getListSearched());
+        jPersonListPane.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
+        jPersonListPane.setSize(418, 600);
+
+        addressBookPresenter.getListSearched().setCellRenderer(new AddressBookPanel.CallRenderer());
         add(jPersonListPane);
         revalidate();
         setVisible(true);
