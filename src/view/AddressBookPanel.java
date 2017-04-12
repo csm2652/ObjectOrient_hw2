@@ -121,7 +121,7 @@ public class AddressBookPanel extends JPanel implements AddressBookPresenter.Vie
         jPersonListPane.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
         jPersonListPane.setSize(418, 599);
 
-        addressBookPresenter.refreshAcceptInView();
+        acceptRenderer();
         add(jPersonListPane, "Center");
         setVisible(true);
     }

@@ -35,9 +35,13 @@ public class AddressBookPresenter {
     private JList list;
     private JList listSearched;
 
+    private boolean isSearched;
+    private String currentTxtSearched;
+
     // Construct
     public AddressBookPresenter(View view) {
         this.view = view;
+        isSearched = false;
         loadCallJSON();
     }
 
@@ -88,11 +92,20 @@ public class AddressBookPresenter {
 
     // Button clicked
     public void touchAddPerson() {
-        addPerson(new Person("정두진","01063958996","",""));
+        addPerson(new Person("최승민","01078898996","",""));
     }
 
     public void touchDelPerson() {
-
+        if (iClickedList != -1) {
+            if (isSearched == false) {
+                delPerson(persons.get(iClickedList));
+            } else {
+                delPerson(personsSearched.get(iClickedList));
+            }
+            iClickedList = -1;
+        } else {
+            System.out.println("none clicked");
+        }
     }
 
     public void touchModPerson() {
@@ -124,7 +137,10 @@ public class AddressBookPresenter {
 
             view.deleteList();
             refreshPersonList();
-            refreshAcceptInView();
+
+            refreshList(isSearched);
+            if (isSearched == false) view.acceptRenderer();
+            else view.acceptSearched();
             //view.updateScreen();
         } catch (Exception e) {
             System.out.println("fail");
@@ -141,7 +157,7 @@ public class AddressBookPresenter {
             delPersonObj.put("number", person.getNumber());
             delPersonObj.put("group", person.getGroup());
             delPersonObj.put("email", person.getEmail());
-            personArray.add(delPersonObj);
+            personArray.remove(delPersonObj);
             jsonObject.put("person", personArray);
 
             persons.remove(person);
@@ -154,7 +170,11 @@ public class AddressBookPresenter {
 
             view.deleteList();
             refreshPersonList();
-            refreshAcceptInView();
+
+            refreshList(isSearched);
+            if (isSearched == false) view.acceptRenderer();
+            else view.acceptSearched();
+
             //view.updateScreen();
         } catch (Exception e) {
             System.out.println("fail");
@@ -166,9 +186,6 @@ public class AddressBookPresenter {
     public void refreshPersonList() {
         list = new JList(persons.toArray());
         list.setVisibleRowCount(4);
-    }
-    public void refreshAcceptInView() {
-        view.acceptRenderer();
     }
 
     private void saveCallJSON() {
@@ -188,21 +205,34 @@ public class AddressBookPresenter {
     }
 
     public void changedTxtSearch(String search) {
+        currentTxtSearched = search;
         if (search.equals("")) {
+            isSearched = false;
+            refreshList(isSearched);
+            view.acceptRenderer();
+        } else {
+            isSearched = true;
+            refreshList(isSearched);
+            view.acceptSearched();
+        }
+    }
+
+    private void refreshList(boolean isSearched) {
+        if(isSearched == false) {
             list.setVisibleRowCount(4);
             view.deleteList();
-            refreshAcceptInView();
+            //view.acceptRenderer();
         } else {
             personsSearched.clear();
             for (int iSearch = 0; iSearch < persons.size(); iSearch++) {
-                if (SearchByName.search(persons.get(iSearch).getName(), search))
+                if (SearchByName.search(persons.get(iSearch).getName(), currentTxtSearched))
                     personsSearched.add(persons.get(iSearch));
             }
             listSearched = new JList(personsSearched.toArray());
 
             listSearched.setVisibleRowCount(4);
             view.deleteList();
-            view.acceptSearched();
+            //view.acceptSearched();
         }
     }
 
