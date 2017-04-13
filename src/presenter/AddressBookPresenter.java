@@ -92,7 +92,8 @@ public class AddressBookPresenter {
 
     // Button clicked
     public void touchAddPerson() {
-        addPerson(new Person("최승민","01078898996","",""));
+        MainPresenter.switchScreen(true);
+        //addPerson(new Person("최승민","01078898996","",""));
     }
 
     public void touchDelPerson() {
