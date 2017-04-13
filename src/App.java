@@ -1,12 +1,16 @@
 import presenter.MainPresenter;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class App extends JFrame implements MainPresenter.View {
     private JPanel activity_main;
     // define Presenter
     public MainPresenter mainPresenter;
+
+    private JTabbedPane jTab;
+    private JPanel jAddModifyPanel;
 
     private App() {
         // access Presenter
@@ -28,8 +32,20 @@ public class App extends JFrame implements MainPresenter.View {
         // set Title
         setTitle("Address Book");
 
-        // init Tab
-        JTabbedPane jTab = new JTabbedPane();
+        setJTab();
+        setJAddModifyPanel();
+
+        MainPresenter.switchScreen(false);
+        // set Device
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        getContentPane().setBackground(new Color(23,169,146));
+        setSize(432, 739);
+        setVisible(true);
+    }
+
+    private void setJTab() {
+        // init Tab (최근기록, 연락처를 볼수 있는 Pane)
+        jTab = new JTabbedPane();
         jTab.setBackground(new Color(23,169,146));
         ImageIcon icon = new ImageIcon("src\\resource\\images\\img_recent_call.jpg");
         jTab.addTab("", icon, mainPresenter.getRecentCallPanel());
@@ -39,19 +55,32 @@ public class App extends JFrame implements MainPresenter.View {
         jTab.addTab("", icon, mainPresenter.getAddressBookPanel());
 
         // accept Tab
-        add(jTab);
         jTab.addChangeListener((ChangeEvent) -> {
             mainPresenter.touchMenu(jTab.getSelectedIndex());
         });
-
-        // set Device
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        getContentPane().setBackground(new Color(23,169,146));
-        setSize(432, 739);
-        setVisible(true);
     }
+
+    private void setJAddModifyPanel() {
+        jAddModifyPanel.setBackground(new Color(23,169,146));
+        jAddModifyPanel.setPreferredSize(new Dimension(420, 64));
+        jAddModifyPanel.setBorder(new EmptyBorder(16, 0, 16, 0));
+    }
+
 
     public static void main(String[] args) {
         new App();
+    }
+
+    @Override
+    public void switchScreenMain() {
+        getContentPane().removeAll();
+        getContentPane().add(jTab);
+        revalidate();
+        repaint();
+    }
+
+    @Override
+    public void switchScreenAddAndModify() {
+
     }
 }
