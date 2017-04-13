@@ -1,8 +1,11 @@
 package presenter;
 
+import view.AddModifyPersonPanel;
 import view.AddressBookPanel;
 import view.RecentCallPanel;
 import view.RecentSMSPanel;
+
+import javax.swing.*;
 
 public class MainPresenter {
     private static View view;
@@ -10,6 +13,7 @@ public class MainPresenter {
     private RecentCallPanel recentCallPanel = null;
     private RecentSMSPanel recentSMSPanel = null;
     private AddressBookPanel addressBookPanel = null;
+    private AddModifyPersonPanel addModifyPersonPanel = null;
 
     public MainPresenter(View view) {
         this.view = view;
@@ -18,6 +22,7 @@ public class MainPresenter {
         recentCallPanel = new RecentCallPanel();
         recentSMSPanel = new RecentSMSPanel();
         addressBookPanel = new AddressBookPanel();
+        addModifyPersonPanel = new AddModifyPersonPanel();
 
     }
 
@@ -30,6 +35,7 @@ public class MainPresenter {
     public AddressBookPanel getAddressBookPanel() {
         return addressBookPanel;
     }
+    public JPanel getAddModifyPersonPanel() { return addModifyPersonPanel.getJAddModifyPanel(); }
 
     public void touchMenu(int index) {
         System.out.println(index + "clicked");

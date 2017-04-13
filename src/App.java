@@ -10,7 +10,6 @@ public class App extends JFrame implements MainPresenter.View {
     public MainPresenter mainPresenter;
 
     private JTabbedPane jTab;
-    private JPanel jAddModifyPanel;
 
     private App() {
         // access Presenter
@@ -33,9 +32,8 @@ public class App extends JFrame implements MainPresenter.View {
         setTitle("Address Book");
 
         setJTab();
-        setJAddModifyPanel();
 
-        MainPresenter.switchScreen(false);
+        MainPresenter.switchScreen(true);
         // set Device
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         getContentPane().setBackground(new Color(23,169,146));
@@ -60,13 +58,6 @@ public class App extends JFrame implements MainPresenter.View {
         });
     }
 
-    private void setJAddModifyPanel() {
-        jAddModifyPanel.setBackground(new Color(23,169,146));
-        jAddModifyPanel.setPreferredSize(new Dimension(420, 64));
-        jAddModifyPanel.setBorder(new EmptyBorder(16, 0, 16, 0));
-    }
-
-
     public static void main(String[] args) {
         new App();
     }
@@ -81,6 +72,9 @@ public class App extends JFrame implements MainPresenter.View {
 
     @Override
     public void switchScreenAddAndModify() {
-
+        getContentPane().removeAll();
+        getContentPane().add(mainPresenter.getAddModifyPersonPanel());
+        revalidate();
+        repaint();
     }
 }
