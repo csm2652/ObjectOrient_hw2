@@ -1,6 +1,7 @@
 package view;
 
 import presenter.AddressBookPresenter;
+import presenter.CallPresenter;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -9,6 +10,8 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 
@@ -134,6 +137,20 @@ public class AddressBookPanel extends JPanel implements AddressBookPresenter.Vie
 
     // Render in Scroll List
     class CallRenderer extends JLabel implements ListCellRenderer {
+        private JButton jBtn;
+        private JLayeredPane panel = new JLayeredPane();
+
+
+
+        public CallRenderer() {
+            panel.setLayout(new BorderLayout());
+            jBtn = new JButton();
+            ImageIcon iconCall = new ImageIcon("src\\resource\\images\\img_call.png");
+            jBtn.setIcon(iconCall);
+            jBtn.setBorder(new EmptyBorder(0, 0, 0, 0));
+            jBtn.setPreferredSize(new Dimension(40, 40));
+        }
+
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index,
                                                       boolean isSelected, boolean cellHasFocus) {
@@ -149,10 +166,13 @@ public class AddressBookPanel extends JPanel implements AddressBookPresenter.Vie
             } else {
                 setForeground(Color.black);
             }
-            return this;
-        }
-    }
 
+            panel.add(this, BorderLayout.WEST, 1);
+            panel.add(jBtn, BorderLayout.EAST, 0);
+            return panel;
+        }
+
+    }
 
     @Override
     public void deleteList() {
@@ -166,9 +186,22 @@ public class AddressBookPanel extends JPanel implements AddressBookPresenter.Vie
         jPersonListPane.setSize(418, 600);
 
         addressBookPresenter.getList().setCellRenderer(new AddressBookPanel.CallRenderer());
+        addressBookPresenter.getList().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getX() > 350) {
+                    clickButtonAt(e.getPoint());
+                }
+            }
+        });
         add(jPersonListPane);
         revalidate();
         setVisible(true);
+    }
+    private void clickButtonAt(Point point)
+    {
+        int index = addressBookPresenter.getList().locationToIndex(point);
+        addressBookPresenter.call(index);
     }
 
 
