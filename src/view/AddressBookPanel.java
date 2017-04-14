@@ -202,6 +202,11 @@ public class AddressBookPanel extends JPanel implements AddressBookPresenter.Vie
     {
         int index = addressBookPresenter.getList().locationToIndex(point);
         addressBookPresenter.call(index);
+        JOptionPane.showMessageDialog(
+                null,
+                "Calling",
+                "AddressBook",
+                JOptionPane.PLAIN_MESSAGE);
     }
 
 
@@ -212,9 +217,29 @@ public class AddressBookPanel extends JPanel implements AddressBookPresenter.Vie
         jPersonListPane.setSize(418, 600);
 
         addressBookPresenter.getListSearched().setCellRenderer(new AddressBookPanel.CallRenderer());
+        addressBookPresenter.getListSearched().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getX() > 350) {
+                    clickSearchedButtonAt(e.getPoint());
+                }
+            }
+        });
         add(jPersonListPane);
         revalidate();
         setVisible(true);
     }
+
+    private void clickSearchedButtonAt(Point point)
+    {
+        int index = addressBookPresenter.getListSearched().locationToIndex(point);
+        addressBookPresenter.callSearched(index);
+        JOptionPane.showMessageDialog(
+                null,
+                "Calling",
+                "AddressBook",
+                JOptionPane.PLAIN_MESSAGE);
+    }
+
 }
 

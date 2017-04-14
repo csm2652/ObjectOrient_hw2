@@ -207,6 +207,9 @@ public class AddressBookPresenter {
     public void call(int index) {
         CallPresenter.callAtAdderssBook(persons.get(index).getNumber());
     }
+    public void callSearched(int index) {
+        CallPresenter.callAtAdderssBook(personsSearched.get(index).getNumber());
+    }
 
     private void saveCallJSON() {
         FileWriter fileWriter;
