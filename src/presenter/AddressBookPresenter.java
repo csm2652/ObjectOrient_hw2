@@ -24,7 +24,7 @@ public class AddressBookPresenter {
     private JSONArray personArray;
     private JSONObject jsonObject;
 
-    private ArrayList<Person> persons = new ArrayList<>();
+    private static ArrayList<Person> persons = new ArrayList<>();
     private ArrayList<Person> personsSearched = new ArrayList<>();
 
     private JList list;
@@ -41,6 +41,7 @@ public class AddressBookPresenter {
     }
 
     /* Getter */
+    public static ArrayList<Person> getPersons() { return persons; }
     public JList getList() {
         return list;
     }
@@ -62,7 +63,7 @@ public class AddressBookPresenter {
         refreshPersonList();
 
         refreshList(isSearched);
-        if (isSearched == false) view.acceptRenderer();
+        if (!isSearched) view.acceptRenderer();
         else view.acceptSearched();
     }
 
@@ -117,7 +118,13 @@ public class AddressBookPresenter {
 
     public void touchModPerson() {
         if (iClickedList != -1) {
-            Person modPerson = persons.get(iClickedList);
+            Person modPerson;
+            if (isSearched == false) {
+                modPerson = persons.get(iClickedList);
+            } else {
+                modPerson = personsSearched.get(iClickedList);
+            }
+
             AddModifyPersonPresenter.refreshModify(modPerson.getName(), modPerson.getNumber(),
                     modPerson.getGroup(), modPerson.getEmail());
             MainPresenter.switchScreen(true);

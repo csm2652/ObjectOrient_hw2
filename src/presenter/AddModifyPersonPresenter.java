@@ -22,6 +22,8 @@ public class AddModifyPersonPresenter {
     private ArrayList<Person> persons = new ArrayList<>();
     private ArrayList<Person> personsSearched = new ArrayList<>();
 
+    private static Person modPerson;
+
     public AddModifyPersonPresenter(View view) {
         this.view = view;
     }
@@ -33,6 +35,7 @@ public class AddModifyPersonPresenter {
             // 수정이 아닐시 그냥 넣기
         }
         loadJSON();
+        if (isModify) delPerson(modPerson);
         addPerson(new Person(name.trim(), number.trim(), group.trim(), email.trim()));
         saveJSON();
         MainPresenter.switchScreen(false);
@@ -67,6 +70,24 @@ public class AddModifyPersonPresenter {
             System.out.println("fail");
         }
     }
+
+    // Del data (Data: Recent Call)
+    private void delPerson(Person person) {
+        try {
+
+            JSONObject delPersonObj = new JSONObject();
+            delPersonObj.put("name", person.getName());
+            delPersonObj.put("number", person.getNumber());
+            delPersonObj.put("group", person.getGroup());
+            delPersonObj.put("email", person.getEmail());
+            personArray.remove(delPersonObj);
+            jsonObject.put("person", personArray);
+
+        } catch (Exception e) {
+            System.out.println("fail");
+        }
+    }
+
     private void saveJSON() {
         FileWriter fileWriter;
         try{
@@ -85,6 +106,7 @@ public class AddModifyPersonPresenter {
 
     public static void refreshModify(String name, String number, String group, String email) {
         isModify = true;
+        modPerson = new Person(name, number, group, email);
         view.setTextArgument(name, number, group, email);
     }
 
