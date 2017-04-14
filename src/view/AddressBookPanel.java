@@ -200,13 +200,17 @@ public class AddressBookPanel extends JPanel implements AddressBookPresenter.Vie
     }
     private void clickButtonAt(Point point)
     {
-        int index = addressBookPresenter.getList().locationToIndex(point);
-        addressBookPresenter.call(index);
-        JOptionPane.showMessageDialog(
+        int result = JOptionPane.showConfirmDialog(
                 null,
                 "Calling",
                 "AddressBook",
-                JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+            int index = addressBookPresenter.getList().locationToIndex(point);
+            addressBookPresenter.call(index);
+        }
+
+
     }
 
 
@@ -232,13 +236,16 @@ public class AddressBookPanel extends JPanel implements AddressBookPresenter.Vie
 
     private void clickSearchedButtonAt(Point point)
     {
-        int index = addressBookPresenter.getListSearched().locationToIndex(point);
-        addressBookPresenter.callSearched(index);
-        JOptionPane.showMessageDialog(
+        int result = JOptionPane.showConfirmDialog(
                 null,
                 "Calling",
                 "AddressBook",
-                JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.YES_NO_OPTION);
+
+        if (result == JOptionPane.YES_OPTION) {
+            int index = addressBookPresenter.getListSearched().locationToIndex(point);
+            addressBookPresenter.callSearched(index);
+        }
     }
 
 }
