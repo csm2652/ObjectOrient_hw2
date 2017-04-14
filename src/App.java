@@ -33,7 +33,8 @@ public class App extends JFrame implements MainPresenter.View {
 
         setJTab();
 
-        MainPresenter.switchScreen(false);
+        add(jTab);
+        //MainPresenter.switchScreen(false);
         // set Device
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         getContentPane().setBackground(new Color(23,169,146));

@@ -12,7 +12,7 @@ public class MainPresenter {
     // declare Panel
     private RecentCallPanel recentCallPanel = null;
     private RecentSMSPanel recentSMSPanel = null;
-    private AddressBookPanel addressBookPanel = null;
+    private static AddressBookPanel addressBookPanel = null;
     private AddModifyPersonPanel addModifyPersonPanel = null;
 
     public MainPresenter(View view) {
@@ -44,6 +44,7 @@ public class MainPresenter {
     public static void switchScreen(boolean isSwitched) {
         if (!isSwitched) {
             view.switchScreenMain();
+            addressBookPanel.refresh();
         } else {
             view.switchScreenAddAndModify();
         }

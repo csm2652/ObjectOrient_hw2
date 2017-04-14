@@ -1,17 +1,14 @@
 package view;
 
+import presenter.AddModifyPersonPresenter;
 import presenter.MainPresenter;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 
-import static com.sun.glass.ui.Cursor.setVisible;
-
-public class AddModifyPersonPanel {
+public class AddModifyPersonPanel implements AddModifyPersonPresenter.View{
     private JPanel jAddModifyPanel;
     // Tool Panel Bar
     private JPanel jBarPanel;
@@ -22,8 +19,10 @@ public class AddModifyPersonPanel {
     private JTextArea jTextGroup;
     private JTextArea jTextEmail;
 
+    private AddModifyPersonPresenter addModifyPersonPresenter;
 
     public AddModifyPersonPanel() {
+        addModifyPersonPresenter = new AddModifyPersonPresenter(this);
         jAddModifyPanel = new JPanel();
         jAddModifyPanel.setBorder(new EmptyBorder(-5, 0, 0, 0));
         setBarUI();
@@ -160,19 +159,34 @@ public class AddModifyPersonPanel {
     private class saveBtnListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            addModifyPersonPresenter.savePerson(jTextName.getText(), jTextNumber.getText(),
+                    jTextGroup.getText(), jTextEmail.getText());
         }
     }
 
     private void changeBorderGrayText() {
-
         jTextNumber.setBorder(BorderFactory.createMatteBorder(0,0,2,0,Color.gray));
         jTextGroup.setBorder(BorderFactory.createMatteBorder(0,0,2,0,Color.gray));
         jTextEmail.setBorder(BorderFactory.createMatteBorder(0,0,2,0,Color.gray));
-
     }
 
     public JPanel getJAddModifyPanel() {
         return jAddModifyPanel;
+    }
+
+    @Override
+    public void setTextNoArgument() {
+        jTextName.setText("");
+        jTextNumber.setText("");
+        jTextGroup.setText("");
+        jTextEmail.setText("");
+    }
+
+    @Override
+    public void setTextArgument(String name, String number, String group, String email) {
+        jTextName.setText(name);
+        jTextNumber.setText(number);
+        jTextGroup.setText(group);
+        jTextEmail.setText(email);
     }
 }

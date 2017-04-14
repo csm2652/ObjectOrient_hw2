@@ -1,7 +1,6 @@
 package presenter;
 
 import algorithm.SearchByName;
-import model.Call;
 import model.Person;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -13,11 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-
 
 public class AddressBookPresenter {
     private View view;
@@ -57,6 +52,20 @@ public class AddressBookPresenter {
         iClickedList = index;
     }
 
+    public void refreshPresent() {
+        persons.clear();
+        personsSearched.clear();
+
+        loadCallJSON();
+        list.clearSelection();
+        view.deleteList();
+        refreshPersonList();
+
+        refreshList(isSearched);
+        if (isSearched == false) view.acceptRenderer();
+        else view.acceptSearched();
+    }
+
     private void loadCallJSON() {
         try {
             // Get JSON DATA
@@ -74,7 +83,6 @@ public class AddressBookPresenter {
                         jsonObjectToSave.get("group").toString(),
                         jsonObjectToSave.get("email").toString()));
             }
-            reverseArray();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -85,14 +93,12 @@ public class AddressBookPresenter {
         }
     }
 
-    // reverArray
-    private void reverseArray() {
-        Collections.reverse(persons);
-    }
 
     // Button clicked
     public void touchAddPerson() {
+        AddModifyPersonPresenter.refreshAdd();
         MainPresenter.switchScreen(true);
+
         //addPerson(new Person("최승민","01078898996","",""));
     }
 
@@ -110,15 +116,22 @@ public class AddressBookPresenter {
     }
 
     public void touchModPerson() {
+        if (iClickedList != -1) {
+            Person modPerson = persons.get(iClickedList);
+            AddModifyPersonPresenter.refreshModify(modPerson.getName(), modPerson.getNumber(),
+                    modPerson.getGroup(), modPerson.getEmail());
+            MainPresenter.switchScreen(true);
+        } else {
+            System.out.println("non clicked");
+        }
 
     }
 
 
-
-    // Add data (Data: Recent Call)
+    /*
+    // Add data (Data: Person)
     private void addPerson(Person person) {
         try {
-            reverseArray();
 
             JSONObject addPersonObj = new JSONObject();
             addPersonObj.put("name", person.getName());
@@ -129,8 +142,6 @@ public class AddressBookPresenter {
             jsonObject.put("person", personArray);
 
             persons.add(person);
-
-            reverseArray();
 
             saveCallJSON();
 
@@ -146,12 +157,11 @@ public class AddressBookPresenter {
         } catch (Exception e) {
             System.out.println("fail");
         }
-    }
+    }*/
 
     // Del data (Data: Recent Call)
     private void delPerson(Person person) {
         try {
-            reverseArray();
 
             JSONObject delPersonObj = new JSONObject();
             delPersonObj.put("name", person.getName());
@@ -162,8 +172,6 @@ public class AddressBookPresenter {
             jsonObject.put("person", personArray);
 
             persons.remove(person);
-
-            reverseArray();
 
             saveCallJSON();
 
