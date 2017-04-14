@@ -89,7 +89,11 @@ public class SMSPresenter {
             SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String currentTime = dayTime.format(new Date(time));
 
-            addRecentSMS(new SMS("send", smss.get(iClickedList).getNumber(), "한글", currentTime));
+            String content = JOptionPane.showInputDialog("문자 내용");
+
+            if (content != null)
+                addRecentSMS(new SMS("send", smss.get(iClickedList).getNumber(),
+                    content, currentTime));
             iClickedList = -1;
         } else {
             System.out.println("none clicked");
