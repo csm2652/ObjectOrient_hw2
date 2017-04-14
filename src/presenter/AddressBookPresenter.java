@@ -1,7 +1,6 @@
 package presenter;
 
 import algorithm.SearchByName;
-import model.Call;
 import model.Person;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -13,11 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-
 
 public class AddressBookPresenter {
     private View view;
@@ -29,7 +24,7 @@ public class AddressBookPresenter {
     private JSONArray personArray;
     private JSONObject jsonObject;
 
-    private ArrayList<Person> persons = new ArrayList<>();
+    private static ArrayList<Person> persons = new ArrayList<>();
     private ArrayList<Person> personsSearched = new ArrayList<>();
 
     private JList list;
@@ -46,6 +41,7 @@ public class AddressBookPresenter {
     }
 
     /* Getter */
+    public static ArrayList<Person> getPersons() { return persons; }
     public JList getList() {
         return list;
     }
@@ -55,6 +51,20 @@ public class AddressBookPresenter {
 
     public void setiClickedList(int index) {
         iClickedList = index;
+    }
+
+    public void refreshPresent() {
+        persons.clear();
+        personsSearched.clear();
+
+        loadCallJSON();
+        list.clearSelection();
+        view.deleteList();
+        refreshPersonList();
+
+        refreshList(isSearched);
+        if (!isSearched) view.acceptRenderer();
+        else view.acceptSearched();
     }
 
     private void loadCallJSON() {
@@ -74,7 +84,6 @@ public class AddressBookPresenter {
                         jsonObjectToSave.get("group").toString(),
                         jsonObjectToSave.get("email").toString()));
             }
-            reverseArray();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -85,14 +94,13 @@ public class AddressBookPresenter {
         }
     }
 
-    // reverArray
-    private void reverseArray() {
-        Collections.reverse(persons);
-    }
 
     // Button clicked
     public void touchAddPerson() {
-        addPerson(new Person("최승민","01078898996","",""));
+        AddModifyPersonPresenter.refreshAdd();
+        MainPresenter.switchScreen(true);
+
+        //addPerson(new Person("최승민","01078898996","",""));
     }
 
     public void touchDelPerson() {
@@ -109,15 +117,28 @@ public class AddressBookPresenter {
     }
 
     public void touchModPerson() {
+        if (iClickedList != -1) {
+            Person modPerson;
+            if (isSearched == false) {
+                modPerson = persons.get(iClickedList);
+            } else {
+                modPerson = personsSearched.get(iClickedList);
+            }
+
+            AddModifyPersonPresenter.refreshModify(modPerson.getName(), modPerson.getNumber(),
+                    modPerson.getGroup(), modPerson.getEmail());
+            MainPresenter.switchScreen(true);
+        } else {
+            System.out.println("non clicked");
+        }
 
     }
 
 
-
-    // Add data (Data: Recent Call)
+    /*
+    // Add data (Data: Person)
     private void addPerson(Person person) {
         try {
-            reverseArray();
 
             JSONObject addPersonObj = new JSONObject();
             addPersonObj.put("name", person.getName());
@@ -128,8 +149,6 @@ public class AddressBookPresenter {
             jsonObject.put("person", personArray);
 
             persons.add(person);
-
-            reverseArray();
 
             saveCallJSON();
 
@@ -145,12 +164,11 @@ public class AddressBookPresenter {
         } catch (Exception e) {
             System.out.println("fail");
         }
-    }
+    }*/
 
     // Del data (Data: Recent Call)
     private void delPerson(Person person) {
         try {
-            reverseArray();
 
             JSONObject delPersonObj = new JSONObject();
             delPersonObj.put("name", person.getName());
@@ -161,8 +179,6 @@ public class AddressBookPresenter {
             jsonObject.put("person", personArray);
 
             persons.remove(person);
-
-            reverseArray();
 
             saveCallJSON();
 

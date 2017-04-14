@@ -21,7 +21,7 @@ public class AddressBookPanel extends JPanel implements AddressBookPresenter.Vie
 
     // Scroll Panel
     public JScrollPane jPersonListPane;
-
+    private JTextArea jTextArea = new JTextArea();
     // Construct
     public AddressBookPanel() {
         // Accept Presenter
@@ -41,7 +41,7 @@ public class AddressBookPanel extends JPanel implements AddressBookPresenter.Vie
         jAddressBookBarPanel.setPreferredSize(new Dimension(420, 64));
         jAddressBookBarPanel.setBorder(new EmptyBorder(16, 0, 16, 0));
 
-        JTextArea jTextArea = new JTextArea();
+        jTextArea = new JTextArea();
         jTextArea.setColumns(20);
         jTextArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -124,6 +124,11 @@ public class AddressBookPanel extends JPanel implements AddressBookPresenter.Vie
         acceptRenderer();
         add(jPersonListPane, "Center");
         setVisible(true);
+    }
+
+    public void refresh() {
+        addressBookPresenter.refreshPresent();
+        addressBookPresenter.changedTxtSearch(jTextArea.getText());
     }
 
 

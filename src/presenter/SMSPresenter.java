@@ -1,5 +1,6 @@
 package presenter;
 
+import model.Person;
 import model.SMS;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -188,7 +189,15 @@ public class SMSPresenter {
 
     public String getStringValue(Object value) {
         SMS entry = (SMS) value;
-        return ("  " + entry.toStringNumber() + "  "  + entry.toStringContent() + " "+ entry.getTime());
+
+        ArrayList<Person> persons = AddressBookPresenter.getPersons();
+        for (int iNumber = 0; iNumber < persons.size(); iNumber++) {
+            if (entry.getNumber().equals(persons.get(iNumber).getNumber())) {
+                return ("  " + persons.get(iNumber).getName() + "  " + entry.toStringContent() + " " + entry.getTime());
+            }
+        }
+
+        return ("  " + entry.toStringNumber() + "  "  + entry.toStringContent() + " " + entry.getTime());
     }
     public String getTypeValue(Object value) {
         SMS entry = (SMS) value;

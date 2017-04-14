@@ -1,6 +1,7 @@
 package presenter;
 
 import model.Call;
+import model.Person;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -181,6 +182,12 @@ public class CallPresenter {
 
     public String getStringValue(Object value) {
         Call entry = (Call) value;
+        ArrayList<Person> persons = AddressBookPresenter.getPersons();
+        for (int iNumber = 0; iNumber < persons.size(); iNumber++) {
+            if (entry.getNumber().equals(persons.get(iNumber).getNumber())) {
+                return ("  " + persons.get(iNumber).getName() + "  " + entry.getTime());
+            }
+        }
         return ("  " + entry.toStringNumber() + "  " + entry.getTime());
     }
     public String getTypeValue(Object value) {
