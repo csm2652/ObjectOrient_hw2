@@ -14,30 +14,48 @@ import java.util.Vector;
  * Created by csm26 on 2017-04-12.
  */
 public class SearchByPhoneNumber {
-    public int comp(Vector<String> lib, String searching){
-        int i, j;
-        String tmp;
-        for(int k =0; k<lib.size();k++){
-            tmp = lib.get(k);
-        for(i = j = 0; i < tmp.length() ; i++, j++){
-            if(j == searching.length()){
-                return i - j;
-            }
-            while(lib.get(i) != ptr[j] && j > 0){
-                j = fail[j - 1] + 1;
-            }
-            if(str[i] != ptr[j]){
-                j = -1;
+
+   /* public static Vector <String> searching(String input, Vector <String> Lib)
+    {
+        Vector <String> Temp = new Vector<String>(10);
+        for(int i=0; i< Lib.size();i++)
+        {
+            System.out.println("dd");
+            if(Lib.get(i).substring(1,input.length()) == input)
+            {
+                Temp.add(count++,Lib.get(i));
+                System.out.println("hh");
             }
         }
-        }
-        return -1;
+        return Temp;
     }
+*/
 
     public static void main(String[] args){
-    Vector<String> Library = new Vector<String>(10);
-    Library.addElement("01048173738");
-    Library.addElement("01069485992");
-    Library.get(0);
-    }
+        int count=0;
+        String input = "0106";
+        String tmp = "0";
+
+        Vector<String> Library = new Vector<String>(10);
+        Vector<String> Tmp = new Vector<String>(10);
+        Library.add("01048173738");
+        Library.add("01069485992");
+        Library.add("01069134543");
+
+        for(int i=0; i< Library.size();i++)
+            {
+               System.out.println("dd");
+               if((input).equals(Library.get(i).substring(0,input.length())))
+               {
+                   Tmp.add(count++,Library.get(i));
+                   System.out.println("hh");
+               }
+            }
+        System.out.println( count + ", 전화번호: " + Library.get(1));
+        for(int j =0; j < count; j++)
+        {
+            System.out.println("asd");
+            System.out.println( j + ", 전화번호: " + Tmp.get(j));
+        }
+        }
 }
