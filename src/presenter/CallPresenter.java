@@ -19,17 +19,17 @@ import java.util.Date;
 
 
 public class CallPresenter {
-    private View view;
+    private static View view;
 
     // clicked list index
     private int iClickedList = -1;
 
     // JSON
-    private JSONArray callArray;
-    private JSONObject jsonObject;
+    private static JSONArray callArray;
+    private static JSONObject jsonObject;
 
-    private ArrayList<Call> calls = new ArrayList<>();
-    private JList list;
+    private static ArrayList<Call> calls = new ArrayList<>();
+    private static JList list;
 
     // Construct
     public CallPresenter(View view) {
@@ -44,6 +44,13 @@ public class CallPresenter {
 
     public void setiClickedList(int index) {
         iClickedList = index;
+    }
+
+    public static void refresh() {
+        list.clearSelection();
+        view.deleteList();
+        refreshRecentCall();
+        refreshAcceptInView();
     }
 
     private void loadCallJSON() {
@@ -74,7 +81,7 @@ public class CallPresenter {
     }
 
     // reverArray
-    private void reverseArray() {
+    private static void reverseArray() {
         Collections.reverse(calls);
     }
 
@@ -86,10 +93,25 @@ public class CallPresenter {
             String currentTime = dayTime.format(new Date(time));
 
             addRecentCall(new Call("send", calls.get(iClickedList).getNumber(), currentTime));
+            list.clearSelection();
+            view.deleteList();
+            refreshRecentCall();
+            refreshAcceptInView();
             iClickedList = -1;
+
         } else {
             System.out.println("none clicked");
         }
+    }
+
+    public static void callAtAdderssBook(String number) {
+            long time = System.currentTimeMillis();
+
+            SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String currentTime = dayTime.format(new Date(time));
+
+            addRecentCall(new Call("send", number, currentTime));
+
     }
 
     public void touchDelCall() {
@@ -102,7 +124,7 @@ public class CallPresenter {
     }
 
     // Add data (Data: Recent Call)
-    private void addRecentCall(Call call) {
+    private static void addRecentCall(Call call) {
         try {
             reverseArray();
 
@@ -119,11 +141,7 @@ public class CallPresenter {
 
             saveCallJSON();
 
-            list.clearSelection();
 
-            view.deleteList();
-            refreshRecentCall();
-            refreshAcceptInView();
             //view.updateScreen();
         } catch (Exception e) {
             System.out.println("fail");
@@ -161,15 +179,15 @@ public class CallPresenter {
 
     // Refresh List (Array to JList)
     // Accept Renderer, Add Pane
-    public void refreshRecentCall() {
+    public static void refreshRecentCall() {
         list = new JList(calls.toArray());
         list.setVisibleRowCount(4);
     }
-    public void refreshAcceptInView() {
+    public static void refreshAcceptInView() {
         view.acceptRenderer();
     }
 
-    private void saveCallJSON() {
+    private static void saveCallJSON() {
         FileWriter fileWriter;
         try{
             fileWriter = new FileWriter("src\\data\\call.json");
@@ -184,6 +202,7 @@ public class CallPresenter {
         Call entry = (Call) value;
         ArrayList<Person> persons = AddressBookPresenter.getPersons();
         for (int iNumber = 0; iNumber < persons.size(); iNumber++) {
+            System.out.println();
             if (entry.getNumber().equals(persons.get(iNumber).getNumber())) {
                 return ("  " + persons.get(iNumber).getName() + "  " + entry.getTime());
             }

@@ -204,6 +204,13 @@ public class AddressBookPresenter {
         list.setVisibleRowCount(4);
     }
 
+    public void call(int index) {
+        CallPresenter.callAtAdderssBook(persons.get(index).getNumber());
+    }
+    public void callSearched(int index) {
+        CallPresenter.callAtAdderssBook(personsSearched.get(index).getNumber());
+    }
+
     private void saveCallJSON() {
         FileWriter fileWriter;
         try{

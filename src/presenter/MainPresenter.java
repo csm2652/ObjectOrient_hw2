@@ -38,7 +38,7 @@ public class MainPresenter {
     public JPanel getAddModifyPersonPanel() { return addModifyPersonPanel.getJAddModifyPanel(); }
 
     public void touchMenu(int index) {
-        System.out.println(index + "clicked");
+        if (index == 0) CallPresenter.refresh();
     }
 
     public static void switchScreen(boolean isSwitched) {
