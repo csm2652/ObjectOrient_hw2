@@ -99,11 +99,29 @@ public class SortingByName {
     }
     public static void main(String[] args){
         Vector <String> Names = new Vector<String> ();
+        String tmp = new String ();
         Names.add("최승민");
         Names.add("정두진");
         Names.add("유인경");
         Names.add("엄준식");
-        Names.add("김장현");
+        Names.add("김장현2");
+        Names.add("김장현1");
+        Names.add("김장현a");
         Names.add("김회민");
+        for(int i =0; i < Names.size()-1; i++)
+        {
+            for(int j = i + 1; j< Names.size();j++)
+            {
+                if (compare(Names.get(i), Names.get(j)) > 0) {
+                    tmp = Names.get(i);
+                    Names.set(i,Names.get(j));
+                    Names.set(j,tmp);
+                }
+            }
+        }
+        for(int i =0; i<Names.size();i++)
+        {
+            System.out.println(Names.get(i));
+        }
     }
 }
