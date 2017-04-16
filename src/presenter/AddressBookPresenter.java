@@ -251,6 +251,11 @@ public class AddressBookPresenter {
                 if (SearchByName.search(persons.get(iSearch).getName(), currentTxtSearched))
                     personsSearched.add(persons.get(iSearch));
             }
+            for (int iSearch = 0; iSearch < persons.size(); iSearch++) {
+                if (SearchByName.search(persons.get(iSearch).getNumber(), currentTxtSearched))
+                    personsSearched.add(persons.get(iSearch));
+            }
+
             listSearched = new JList(personsSearched.toArray());
 
             listSearched.setVisibleRowCount(4);
