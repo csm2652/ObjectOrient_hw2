@@ -1,6 +1,7 @@
 package presenter;
 
 import algorithm.SearchByName;
+import algorithm.SortByName;
 import model.Person;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -58,6 +59,7 @@ public class AddressBookPresenter {
         personsSearched.clear();
 
         loadCallJSON();
+
         list.clearSelection();
         view.deleteList();
         refreshPersonList();
@@ -134,39 +136,6 @@ public class AddressBookPresenter {
 
     }
 
-
-    /*
-    // Add data (Data: Person)
-    private void addPerson(Person person) {
-        try {
-
-            JSONObject addPersonObj = new JSONObject();
-            addPersonObj.put("name", person.getName());
-            addPersonObj.put("number", person.getNumber());
-            addPersonObj.put("group", person.getGroup());
-            addPersonObj.put("email", person.getEmail());
-            personArray.add(addPersonObj);
-            jsonObject.put("person", personArray);
-
-            persons.add(person);
-
-            saveCallJSON();
-
-            list.clearSelection();
-
-            view.deleteList();
-            refreshPersonList();
-
-            refreshList(isSearched);
-            if (isSearched == false) view.acceptRenderer();
-            else view.acceptSearched();
-            //view.updateScreen();
-        } catch (Exception e) {
-            System.out.println("fail");
-        }
-    }*/
-
-    // Del data (Data: Recent Call)
     private void delPerson(Person person) {
         try {
 
@@ -200,6 +169,7 @@ public class AddressBookPresenter {
     // Refresh List (Array to JList)
     // Accept Renderer, Add Pane
     public void refreshPersonList() {
+        persons = SortByName.sort(persons);
         list = new JList(persons.toArray());
         list.setVisibleRowCount(4);
     }
@@ -260,7 +230,6 @@ public class AddressBookPresenter {
 
             listSearched.setVisibleRowCount(4);
             view.deleteList();
-            //view.acceptSearched();
         }
     }
 
