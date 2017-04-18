@@ -35,3 +35,19 @@
 # UML
 
 ![uml](./UML.png)
+
+--
+
+과제 깃 주소 : https://github.com/csm2652/ObjectOrient_hw2
+
+명세 : objectorient2.docx
+
+실행 셋팅 : README.md 참고 (깃 허브)
+
+UML : README.md 참고 (깃 허브)
+
+실행 환경 : 윈도우
+
+실행 방법 : IntelliJ에서 Run / Debug Configurations 셋팅 후 Run
+
+만든이 : 최승민, 정두진
